@@ -93,8 +93,7 @@ class EventDispatcher:
 
         # Calculate the datetime for the next event using the prefetched events.
         next_dt = None
-        prefetched_events = [e for e in self._prefetched_events.values() if e]
-        if prefetched_events:
+        if prefetched_events := [e for e in self._prefetched_events.values() if e]:
             next_dt = min(map(lambda e: e.when, prefetched_events))
         assert ge_or_assert is None or next_dt is None or next_dt >= ge_or_assert, \
             f"{next_dt} can't be dispatched after {ge_or_assert}"
@@ -123,8 +122,7 @@ class EventDispatcher:
         last_dt = None
 
         while not self._stopped:
-            dispatched_dt = self._dispatch_next(last_dt)
-            if dispatched_dt is None:
+            if (dispatched_dt := self._dispatch_next(last_dt)) is None:
                 time.sleep(0.01)
             else:
                 last_dt = dispatched_dt

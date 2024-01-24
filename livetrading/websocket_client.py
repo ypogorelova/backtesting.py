@@ -58,6 +58,5 @@ class WSClient(EventProducer, websocket.WebSocketApp):
 
     def handle_message(self, message: dict) -> None:
         channel = message.get("type")
-        event_source = self.event_sources.get(channel)
-        if event_source:
+        if event_source := self.event_sources.get(channel):
             event_source.push_to_queue(message)

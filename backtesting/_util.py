@@ -158,8 +158,7 @@ class _Data:
         return self.__pip
 
     def __get_array(self, key) -> _Array:
-        arr = self.__cache.get(key)
-        if arr is None:
+        if (arr := self.__cache.get(key)) is None:
             arr = self.__cache[key] = cast(_Array, self.__arrays[key][:self.__i])
         return arr
 

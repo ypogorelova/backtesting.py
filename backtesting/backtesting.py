@@ -59,9 +59,8 @@ class Strategy(metaclass=ABCMeta):
         return '<Strategy ' + str(self) + '>'
 
     def __str__(self):
-        params = ','.join(f'{i[0]}={i[1]}' for i in zip(self._params.keys(),
-                                                        map(_as_str, self._params.values())))
-        if params:
+        if params := ','.join(f'{i[0]}={i[1]}' for i in zip(self._params.keys(),
+                                                        map(_as_str, self._params.values()))):
             params = '(' + params + ')'
         return f'{self.__class__.__name__}{params}'
 
@@ -420,8 +419,7 @@ class Order:
     def cancel(self):
         """Cancel the order."""
         self.__broker.orders.remove(self)
-        trade = self.__parent_trade
-        if trade:
+        if trade := self.__parent_trade:
             if self is trade._sl_order:
                 trade._replace(sl_order=None)
             elif self is trade._tp_order:
@@ -826,8 +824,7 @@ class _Broker:
                 continue
 
             # Check if stop condition was hit
-            stop_price = order.stop
-            if stop_price:
+            if stop_price := order.stop:
                 is_stop_hit = ((high > stop_price) if order.is_long else (low < stop_price))
                 if not is_stop_hit:
                     continue
