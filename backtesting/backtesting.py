@@ -21,6 +21,7 @@ from typing import Callable, Dict, List, Optional, Sequence, Tuple, Type, Union
 import numpy as np
 import pandas as pd
 from numpy.random import default_rng
+import math
 
 try:
     from tqdm.auto import tqdm as _tqdm
@@ -1528,7 +1529,7 @@ class Backtest:
                 output.append(heatmap)
 
             if return_optimization:
-                valid = res.func_vals != INVALID
+                valid = not math.isclose(res.func_vals, INVALID, rel_tol=1e-09, abs_tol=0.0)
                 res.x_iters = list(compress(res.x_iters, valid))
                 res.func_vals = res.func_vals[valid]
                 output.append(res)

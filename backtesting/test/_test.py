@@ -33,6 +33,7 @@ from backtesting.lib import (
     resample_apply,
 )
 from backtesting.test import EURUSD, GOOG, SMA
+import math
 
 SHORT_DATA = GOOG.iloc[:20]  # Short data for fast tests with no indicator lag
 
@@ -142,7 +143,7 @@ class TestBacktest(TestCase):
                 assert 1 == try_(lambda: self.data.X, 1, AttributeError)
                 assert 1 == try_(lambda: self.data['X'], 1, KeyError)
 
-                assert self.data.pip == .01
+                assert math.isclose(self.data.pip, .01, rel_tol=1e-09, abs_tol=0.0)
 
                 assert float(self.data.Close) == self.data.Close[-1]
 
